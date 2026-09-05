@@ -10,4 +10,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Ping the app
-        run: curl -sL https://settlo.streamlit.app/ -o /dev/null -w "Status: %{http_code}\n"
+        run: |
+          STATUS=$(curl -sL -o /dev/null -w "%{http_code}" https://settlo.streamlit.app/)
+          echo "Status: $STATUS"
