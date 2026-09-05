@@ -68,6 +68,13 @@ Every e-commerce merchant using payment gateways like Razorpay faces a major ope
 ```
 
 ---
+## 🛠️ Tech Stack
+
+- **Frontend:** Streamlit, Plotly (Dynamic Cash Forecasting Charts)
+- **Backend:** FastAPI, Python 3.10+, Uvicorn
+- **AI / LLM:** Groq API (Llama 3 8B / 70B for zero-hallucination tool calling)
+- **Integrations:** Razorpay REST API (Live Test Mode + Local Mock Mode)
+- **Data & Testing:** Pandas, Pytest (100% deterministic test coverage)
 
 ## 🎯 Ground-Truth Benchmark Results
 
