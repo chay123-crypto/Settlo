@@ -2,6 +2,7 @@ import sys
 from pathlib import Path
 
 import pandas as pd
+import plotly.graph_objects as go
 import streamlit as st
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -84,7 +85,7 @@ mode_badge = '<span style="background: #166534; color: #4ade80; padding: 4px 12p
 st.markdown(f"""
 <div class="hero-header">
     <div style="display: flex; justify-content: space-between; align-items: center;">
-        <div class="hero-title">⚡ Settlo</div>
+        <div class="hero-title">⚡ Settlo - AI Finance Controller </div>
         {mode_badge}
     </div>
     <div class="hero-subtitle">Deterministic Payment Gateway Reconciliation, Exception Taxonomy Classification & Forward Cash Liquidity Forecasting</div>
@@ -251,7 +252,37 @@ with tab4:
                 proj_df["Date"] = pd.to_datetime(proj_df["date"]).dt.strftime('%b %d')
                 proj_df["Inflow (INR)"] = proj_df["new_inflow_paise"] / 100
                 proj_df["Cumulative (INR)"] = proj_df["cumulative_paise"] / 100
-                st.bar_chart(proj_df.set_index("Date")["Inflow (INR)"], use_container_width=True)
+
+                # Settled amount shown only on Day 0 (today)
+                settled_inr = forecast["settled_paise"] / 100
+                settled_vals = [settled_inr] + [0] * (len(proj_df) - 1)
+
+                fig = go.Figure()
+                fig.add_trace(go.Bar(
+                    x=proj_df["Date"],
+                    y=settled_vals,
+                    name="Already Settled",
+                    marker_color="#10b981",
+                ))
+                fig.add_trace(go.Bar(
+                    x=proj_df["Date"],
+                    y=proj_df["Inflow (INR)"],
+                    name="Expected Inflow",
+                    marker_color="#3b82f6",
+                ))
+                fig.update_layout(
+                    barmode="group",
+                    xaxis_title="Date",
+                    yaxis_title="Amount (INR)",
+                    yaxis=dict(rangemode="nonnegative"),
+                    legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
+                    plot_bgcolor="rgba(0,0,0,0)",
+                    paper_bgcolor="rgba(0,0,0,0)",
+                    font=dict(color="#e2e8f0"),
+                    margin=dict(t=40, b=40),
+                    height=380,
+                )
+                st.plotly_chart(fig, use_container_width=True)
                 st.dataframe(proj_df[["Date", "Inflow (INR)", "Cumulative (INR)"]], use_container_width=True)
         except Exception as e:
             st.error(f"Could not generate forecast: {e}")
