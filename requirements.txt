@@ -1,0 +1,14 @@
+fastapi
+uvicorn
+streamlit
+pandas
+pydantic
+pydantic-settings
+requests
+python-multipart
+pytest
+pytest-cov
+httpx
+tenacity
+groq
+openpyxl

@@ -1,0 +1,13 @@
+.venv/
+.env
+__pycache__/
+*.pyc
+.pytest_cache/
+*.db
+data/output/*.csv
+data/output/*.json
+data/output/*.db
+!data/output/.gitkeep
+coverage.xml
+htmlcov/
+.DS_Store
